@@ -37,7 +37,10 @@ const Dashboard = () => {
   const [showTutorial, setShowTutorial] = useState(false);
   
   // Force rebuild test - remove this after testing
-  console.log('🔄 Dashboard component loaded - version 2.0');
+  console.log('🚀 NEXUS MAIL GUARD v2.0 - MAJOR UPDATE DEPLOYED!');
+  console.log('📧 Demo Mode Available');
+  console.log('🔧 Real Gmail Integration Active');
+  console.log('🎯 Enhanced UI Features Loaded');
 
   useEffect(() => {
     // Check for user session
@@ -293,7 +296,7 @@ const Dashboard = () => {
       <header className="border-b border-border/50 backdrop-blur-sm bg-card/30 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-            Email Classifier
+            Nexus Mail Guard v2.0
           </h1>
           <Button onClick={handleLogout} variant="outline" size="sm">
             <LogOut className="mr-2 h-4 w-4" />
