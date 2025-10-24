@@ -296,7 +296,7 @@ const Dashboard = () => {
       <header className="border-b border-border/50 backdrop-blur-sm bg-card/30 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-            Nexus Mail Guard v2.0
+            Nexus Mail Guard v2.1
           </h1>
           <Button onClick={handleLogout} variant="outline" size="sm">
             <LogOut className="mr-2 h-4 w-4" />
