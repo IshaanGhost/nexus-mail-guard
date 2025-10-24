@@ -82,14 +82,6 @@ const Login = () => {
         <p className="text-center text-sm text-muted-foreground mt-6">
           By signing in, you agree to access your Gmail for classification
         </p>
-        
-        {/* Debug info */}
-        <div className="mt-4 p-4 bg-muted rounded-lg text-xs">
-          <p><strong>Debug Info:</strong></p>
-          <p>Supabase URL: {supabase.supabaseUrl}</p>
-          <p>Origin: {window.location.origin}</p>
-          <p>Expected Redirect: {supabase.supabaseUrl}/auth/v1/callback</p>
-        </div>
       </div>
     </div>
   );
