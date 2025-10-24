@@ -11,10 +11,12 @@ An AI-powered email classification system that automatically categorizes your Gm
 - **💡 Demo Mode** - Try 3 free classifications without an API key
 - **📱 Responsive Design** - Beautiful UI built with shadcn/ui and Tailwind CSS
 - **🔒 Privacy-Focused** - Your emails are processed securely and not stored
+- **⚡ Client-Side Processing** - Fast, secure email classification in your browser
+- **🛡️ Error Handling** - Robust error handling with helpful user feedback
 
 ## 🚀 Live Demo
 
-**[Try Nexus Mail Guard →](https://nexus-mail-guard.lovable.app)**
+**[Try Nexus Mail Guard →](https://nexus-mail-guard.vercel.app)**
 
 ## 🛠️ Tech Stack
 
@@ -23,7 +25,8 @@ An AI-powered email classification system that automatically categorizes your Gm
 - **Authentication**: Supabase Auth + Google OAuth
 - **AI**: OpenAI GPT-4o API
 - **Email API**: Gmail API
-- **Deployment**: Lovable Cloud
+- **Deployment**: Vercel
+- **State Management**: React Hooks + Local Storage
 
 ## 🎯 How It Works
 
@@ -36,7 +39,7 @@ An AI-powered email classification system that automatically categorizes your Gm
 ## 🚀 Quick Start
 
 ### Option 1: Use the Live Demo
-1. Visit [nexus-mail-guard.lovable.app](https://nexus-mail-guard.lovable.app)
+1. Visit [nexus-mail-guard.vercel.app](https://nexus-mail-guard.vercel.app)
 2. Sign in with Google
 3. Try demo mode or add your OpenAI API key
 4. Start classifying emails!
@@ -65,7 +68,7 @@ npm run dev
 5. Copy the key (starts with `sk-`)
 6. Paste it in the app
 
-**Cost**: ~$0.01-0.05 per email classification
+**Cost**: ~$0.01-0.02 per email classification (very affordable!)
 
 ### Demo Mode
 - Try 3 free classifications without an API key
@@ -89,6 +92,8 @@ npm run dev
 - **No Data Storage**: Emails are processed in real-time, not stored
 - **Secure Authentication**: Uses Google OAuth 2.0
 - **API Key Security**: Your OpenAI key is stored locally in your browser
+- **Client-Side Processing**: All email analysis happens in your browser
+- **Rate Limiting**: Built-in delays to prevent API quota issues
 
 ## 🛠️ Development
 
@@ -99,13 +104,15 @@ npm run dev
 - Supabase account
 
 ### Environment Variables
-Create a `.env.local` file:
+The app is configured to work out of the box with the live demo. For local development, you can create a `.env.local` file:
 
 ```env
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_key
 VITE_GOOGLE_CLIENT_ID=your_google_client_id
 ```
+
+**Note**: The live demo already has all necessary configurations set up!
 
 ### Project Structure
 ```
@@ -134,7 +141,31 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [OpenAI](https://openai.com) for the GPT-4o API
 - [Supabase](https://supabase.com) for authentication
 - [shadcn/ui](https://ui.shadcn.com) for beautiful UI components
-- [Lovable](https://lovable.dev) for deployment platform
+- [Vercel](https://vercel.com) for reliable deployment platform
+- [React](https://react.dev) and [Vite](https://vitejs.dev) for the development framework
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**"OpenAI quota exceeded" error:**
+- Check your OpenAI billing at [platform.openai.com/account/billing](https://platform.openai.com/account/billing)
+- Add a payment method if you've used your free credits
+- Try demo mode while setting up billing
+
+**"Redirect URI mismatch" error:**
+- This is usually resolved automatically
+- Try clearing your browser cache and signing in again
+
+**Emails not loading:**
+- Ensure you're signed in with Google
+- Check that Gmail API is enabled in your Google account
+- Try refreshing the page
+
+**Classification not working:**
+- Make sure you've added a valid OpenAI API key
+- Check that your API key has sufficient credits
+- Try demo mode to test the interface
 
 ## 📞 Support
 
@@ -142,11 +173,12 @@ If you encounter any issues or have questions:
 
 1. Check the [Issues](https://github.com/IshaanGhost/nexus-mail-guard/issues) page
 2. Create a new issue with detailed information
-3. Contact: [Your Contact Information]
+3. Try the troubleshooting steps above first
 
 ---
 
-**Made with ❤️ by [Your Name]**
+**Made with ❤️ by Ishaan**
 
-[![Deploy with Lovable](https://img.shields.io/badge/Deploy%20with-Lovable-blue)](https://lovable.dev)
+[![Deploy with Vercel](https://img.shields.io/badge/Deploy%20with-Vercel-black)](https://vercel.com)
 [![GitHub stars](https://img.shields.io/github/stars/IshaanGhost/nexus-mail-guard?style=social)](https://github.com/IshaanGhost/nexus-mail-guard)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-nexus--mail--guard.vercel.app-green)](https://nexus-mail-guard.vercel.app)
