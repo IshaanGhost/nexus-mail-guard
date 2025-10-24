@@ -22,6 +22,7 @@ export async function classifyEmail(email: GmailMessage, openaiApiKey: string): 
   try {
     const openai = new OpenAI({
       apiKey: openaiApiKey,
+      dangerouslyAllowBrowser: true, // Required for client-side usage
     });
     const prompt = `
 You are an email classification assistant. Analyze the following email and classify it into one of these categories:
