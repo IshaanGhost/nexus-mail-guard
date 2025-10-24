@@ -119,6 +119,7 @@ const Dashboard = () => {
       console.log('🔄 Calling classifyEmailsClient...');
       const classifiedEmails = await classifyEmailsClient(openaiKey, accessToken);
       console.log('✅ Received classified emails:', classifiedEmails.length);
+      console.log('📧 Raw classified emails data:', classifiedEmails);
       
       // Convert ClassifiedEmail to Email format for display
       const emails: Email[] = classifiedEmails.map(email => ({
@@ -132,6 +133,10 @@ const Dashboard = () => {
       }));
 
       console.log('📧 Processed emails:', emails);
+      console.log('🔍 Email sources check:');
+      emails.forEach((email, index) => {
+        console.log(`Email ${index + 1}: ${email.from} - ${email.subject} (ID: ${email.id})`);
+      });
       setEmails(emails);
       localStorage.setItem("emails", JSON.stringify(emails));
       toast.success(`Successfully classified ${emails.length} emails`);
