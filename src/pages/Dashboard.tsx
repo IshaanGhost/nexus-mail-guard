@@ -90,10 +90,15 @@ const Dashboard = () => {
       return;
     }
 
+    if (!accessToken) {
+      toast.error("Google access token not found. Please sign in again.");
+      return;
+    }
+
     setFetchingEmails(true);
     try {
-      // Use the new classification API
-      const classifiedEmails = await classifyEmailsClient(openaiKey);
+      // Use the new classification API with access token
+      const classifiedEmails = await classifyEmailsClient(openaiKey, accessToken);
       
       // Convert ClassifiedEmail to Email format for display
       const emails: Email[] = classifiedEmails.map(email => ({

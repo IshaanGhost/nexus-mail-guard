@@ -3,8 +3,13 @@ import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
 // Force the correct Supabase project URL to avoid redirect_uri_mismatch
+// Override any environment variables that might be set by Lovable
 const SUPABASE_URL = 'https://zstxmjpmkhtcqmbladva.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzdHhtanBta2h0Y3FtYmxhZHZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzMjc1MjEsImV4cCI6MjA3NjkwMzUyMX0.JFvYBj05Yr08tDU_przHMi2fL_M40gBy514SMaFOneg';
+
+// Debug logging to help troubleshoot
+console.log('Supabase URL:', SUPABASE_URL);
+console.log('Expected redirect URI:', `${SUPABASE_URL}/auth/v1/callback`);
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";

@@ -46,7 +46,7 @@ export async function classifyEmailsHandler(openaiApiKey: string, accessToken: s
  * Client-side function to call the classification API
  * This would typically be called from a React component
  */
-export async function classifyEmailsClient(openaiApiKey: string): Promise<ClassifiedEmail[]> {
+export async function classifyEmailsClient(openaiApiKey: string, accessToken: string): Promise<ClassifiedEmail[]> {
   try {
     // In a real implementation, this would make an HTTP request to your backend API
     // For now, we'll call the handler directly since we're in a client-side environment
@@ -54,8 +54,6 @@ export async function classifyEmailsClient(openaiApiKey: string): Promise<Classi
     
     console.warn('Warning: This is a client-side implementation. In production, move this to a secure backend API.');
     
-    // Get access token from auth context
-    const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
       throw new Error('No access token found. Please sign in again.');
     }
