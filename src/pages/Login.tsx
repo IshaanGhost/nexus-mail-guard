@@ -3,20 +3,28 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail } from "lucide-react";
-import { useAuth } from "@/lib/auth-context";
+import { generateGoogleAuthUrl } from "@/lib/google-auth";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { user, isLoading, signIn } = useAuth();
 
   useEffect(() => {
+    // Check if user is already logged in
+    const user = localStorage.getItem('user');
     if (user) {
       navigate("/dashboard");
     }
-  }, [user, navigate]);
+  }, [navigate]);
 
   const handleGoogleLogin = () => {
-    signIn();
+    console.log('Starting Google OAuth...');
+    console.log('Client ID:', import.meta.env.VITE_GOOGLE_CLIENT_ID);
+    console.log('Current URL:', window.location.origin);
+    
+    const authUrl = generateGoogleAuthUrl();
+    console.log('Auth URL:', authUrl);
+    
+    window.location.href = authUrl;
   };
 
   return (
@@ -41,12 +49,11 @@ const Login = () => {
           <CardContent>
             <Button
               onClick={handleGoogleLogin}
-              disabled={isLoading}
               className="w-full bg-gradient-primary hover:opacity-90 transition-opacity shadow-glow"
               size="lg"
             >
               <Mail className="mr-2 h-5 w-5" />
-              {isLoading ? "Connecting..." : "Continue with Google"}
+              Continue with Google
             </Button>
           </CardContent>
         </Card>
@@ -54,6 +61,14 @@ const Login = () => {
         <p className="text-center text-sm text-muted-foreground mt-6">
           By signing in, you agree to access your Gmail for classification
         </p>
+        
+        {/* Debug info */}
+        <div className="mt-4 p-4 bg-muted rounded-lg text-xs">
+          <p><strong>Debug Info:</strong></p>
+          <p>Client ID: {import.meta.env.VITE_GOOGLE_CLIENT_ID ? 'Set' : 'Not Set'}</p>
+          <p>Origin: {window.location.origin}</p>
+          <p>Expected Redirect: {window.location.origin}/auth/callback</p>
+        </div>
       </div>
     </div>
   );
