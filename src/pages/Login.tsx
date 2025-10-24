@@ -53,7 +53,7 @@ const Login = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-2">
-            Email Classifier
+            Nexus Mail Guard
           </h1>
           <p className="text-muted-foreground">
             Organize your inbox with AI-powered classification
