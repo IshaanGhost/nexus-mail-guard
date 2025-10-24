@@ -203,7 +203,9 @@ const Dashboard = () => {
         date: email.date,
       }));
 
+      setEmails(emails);
       setClassifiedEmails(emails);
+      localStorage.setItem("emails", JSON.stringify(emails));
       localStorage.setItem("classifiedEmails", JSON.stringify(emails));
       
       if (demoMode) {
@@ -431,60 +433,10 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        {emails.length > 0 && <EmailTable emails={emails} />}
-
-        {classifiedEmails.length > 0 && (
-          <Card className="shadow-card border-border/50">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Mail className="h-5 w-5 text-primary" />
-                Classified Emails ({classifiedEmails.length})
-              </CardTitle>
-              <CardDescription>
-                Your emails have been automatically classified using AI
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {classifiedEmails.map((email) => (
-                  <div key={email.id} className="flex items-center justify-between p-4 border border-border/50 rounded-lg hover:bg-muted/30 transition-colors">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-1">
-                        <span className="font-medium text-sm text-muted-foreground truncate">
-                          {email.from}
-                        </span>
-                        <Badge 
-                          variant="outline" 
-                          className={`text-xs font-medium ${
-                            email.category === 'Important' ? 'bg-green-100 text-green-800 border-green-200' :
-                            email.category === 'Promotional' ? 'bg-yellow-100 text-yellow-800 border-yellow-200' :
-                            email.category === 'Social' ? 'bg-blue-100 text-blue-800 border-blue-200' :
-                            email.category === 'Marketing' ? 'bg-purple-100 text-purple-800 border-purple-200' :
-                            email.category === 'Spam' ? 'bg-red-100 text-red-800 border-red-200' :
-                            'bg-gray-100 text-gray-800 border-gray-200'
-                          }`}
-                        >
-                          {email.category}
-                        </Badge>
-                      </div>
-                      <h3 className="font-semibold text-foreground truncate">
-                        {email.subject}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                        {email.snippet}
-                      </p>
-                      {email.reason && (
-                        <p className="text-xs text-muted-foreground mt-2 italic">
-                          Reason: {email.reason}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+        {(emails.length > 0 || classifiedEmails.length > 0) && (
+          <EmailTable emails={emails.length > 0 ? emails : classifiedEmails} />
         )}
+
 
         {/* Tutorial Modal */}
         <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
