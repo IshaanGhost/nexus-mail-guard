@@ -2,18 +2,22 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-// Force the correct Supabase project URL to avoid redirect_uri_mismatch
-// Override any environment variables that might be set by Lovable
+// CRITICAL: Force the correct Supabase project URL to avoid redirect_uri_mismatch
+// This overrides ANY environment variables that Lovable might be setting
 const SUPABASE_URL = 'https://zstxmjpmkhtcqmbladva.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzdHhtanBta2h0Y3FtYmxhZHZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzMjc1MjEsImV4cCI6MjA3NjkwMzUyMX0.JFvYBj05Yr08tDU_przHMi2fL_M40gBy514SMaFOneg';
 
 // Debug logging to help troubleshoot
-console.log('Supabase URL:', SUPABASE_URL);
-console.log('Expected redirect URI:', `${SUPABASE_URL}/auth/v1/callback`);
+console.log('🔧 Supabase Configuration:');
+console.log('📍 Supabase URL:', SUPABASE_URL);
+console.log('🔗 Expected redirect URI:', `${SUPABASE_URL}/auth/v1/callback`);
+console.log('🌐 Current origin:', window.location.origin);
+console.log('⚠️  If you see the old project ID (ougtiqmkbjfggpijhldu), Lovable is overriding our config!');
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
+// Create Supabase client with explicit configuration
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
     storage: localStorage,
@@ -21,3 +25,13 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     autoRefreshToken: true,
   }
 });
+
+// Override any potential environment variable overrides
+if (typeof window !== 'undefined') {
+  // Force the correct URL in the client
+  (supabase as any).supabaseUrl = SUPABASE_URL;
+  (supabase as any).supabaseKey = SUPABASE_PUBLISHABLE_KEY;
+  
+  console.log('✅ Supabase client created with forced configuration');
+  console.log('🔍 Actual client URL:', (supabase as any).supabaseUrl);
+}
