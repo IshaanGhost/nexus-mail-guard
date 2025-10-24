@@ -18,8 +18,10 @@ const Login = () => {
   }, [navigate]);
 
   const handleGoogleLogin = async () => {
-    console.log('Supabase URL:', supabase.supabaseUrl);
-    console.log('Current origin:', window.location.origin);
+    console.log('🔧 Login Debug Info:');
+    console.log('📍 Supabase URL:', supabase.supabaseUrl);
+    console.log('🌐 Current origin:', window.location.origin);
+    console.log('🔗 Expected redirect:', `${supabase.supabaseUrl}/auth/v1/callback`);
     
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',

@@ -35,6 +35,9 @@ const Dashboard = () => {
   const [demoMode, setDemoMode] = useState(false);
   const [usageCount, setUsageCount] = useState(0);
   const [showTutorial, setShowTutorial] = useState(false);
+  
+  // Force rebuild test - remove this after testing
+  console.log('🔄 Dashboard component loaded - version 2.0');
 
   useEffect(() => {
     // Check for user session
