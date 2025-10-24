@@ -178,22 +178,10 @@ const Dashboard = () => {
           return newCount;
         });
       } else {
-        // Real API call
-        const response = await fetch('/api/classify-emails', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
-          },
-          body: JSON.stringify({ openaiApiKey: openaiKey })
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to classify emails');
-        }
-
-        classifiedEmailsData = await response.json();
+        // Real API call using client-side classification
+        console.log('🔄 Calling classifyEmailsClient...');
+        classifiedEmailsData = await classifyEmailsClient(openaiKey, accessToken);
+        console.log('✅ Received classified emails:', classifiedEmailsData.length);
       }
       
       // Convert to Email format and store
