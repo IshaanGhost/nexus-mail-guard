@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/lib/auth-context";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { LogOut, Key, Mail, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { EmailTable } from "@/components/EmailTable";
-import { classifyEmailsClient, ClassifiedEmail } from "@/lib/classify-emails-api";
+import { classifyEmailsClient } from "@/lib/classify-emails-api";
 
 export interface Email {
   id: string;
@@ -23,7 +23,9 @@ export interface Email {
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { user, accessToken, isLoading, signOut } = useAuth();
+  const [user, setUser] = useState<any>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [openaiKey, setOpenaiKey] = useState("");
   const [emails, setEmails] = useState<Email[]>([]);
   const [fetchingEmails, setFetchingEmails] = useState(false);
@@ -31,11 +33,30 @@ const Dashboard = () => {
   const [classifyingEmails, setClassifyingEmails] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && !user) {
-      navigate("/login");
-      return;
-    }
+    // Check for user session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setUser(session.user);
+        setAccessToken(session.provider_token || null);
+      } else {
+        navigate("/login");
+      }
+      setIsLoading(false);
+    });
 
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setAccessToken(session?.provider_token || null);
+      if (!session) {
+        navigate("/login");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  useEffect(() => {
     // Load saved OpenAI key and emails from localStorage
     const savedKey = localStorage.getItem("openai_key");
     const savedEmails = localStorage.getItem("emails");
@@ -44,7 +65,7 @@ const Dashboard = () => {
     if (savedKey) setOpenaiKey(savedKey);
     if (savedEmails) setEmails(JSON.parse(savedEmails));
     if (savedClassifiedEmails) setClassifiedEmails(JSON.parse(savedClassifiedEmails));
-  }, [user, isLoading, navigate]);
+  }, []);
 
   const handleSaveKey = () => {
     if (!openaiKey.trim()) {
@@ -140,8 +161,9 @@ const Dashboard = () => {
     }
   };
 
-  const handleLogout = () => {
-    signOut();
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/login");
   };
 
   if (isLoading) {

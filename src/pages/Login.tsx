@@ -3,28 +3,36 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail } from "lucide-react";
-import { generateGoogleAuthUrl } from "@/lib/google-auth";
+import { supabase } from "@/integrations/supabase/client";
 
 const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     // Check if user is already logged in
-    const user = localStorage.getItem('user');
-    if (user) {
-      navigate("/dashboard");
-    }
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        navigate("/dashboard");
+      }
+    });
   }, [navigate]);
 
-  const handleGoogleLogin = () => {
-    console.log('Starting Google OAuth...');
-    console.log('Client ID:', import.meta.env.VITE_GOOGLE_CLIENT_ID);
-    console.log('Current URL:', window.location.origin);
+  const handleGoogleLogin = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/dashboard`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+        scopes: 'email profile https://www.googleapis.com/auth/gmail.readonly'
+      }
+    });
     
-    const authUrl = generateGoogleAuthUrl();
-    console.log('Auth URL:', authUrl);
-    
-    window.location.href = authUrl;
+    if (error) {
+      console.error('Error signing in:', error);
+    }
   };
 
   return (
@@ -62,13 +70,6 @@ const Login = () => {
           By signing in, you agree to access your Gmail for classification
         </p>
         
-        {/* Debug info */}
-        <div className="mt-4 p-4 bg-muted rounded-lg text-xs">
-          <p><strong>Debug Info:</strong></p>
-          <p>Client ID: {import.meta.env.VITE_GOOGLE_CLIENT_ID ? 'Set' : 'Not Set'}</p>
-          <p>Origin: {window.location.origin}</p>
-          <p>Expected Redirect: {window.location.origin}/auth/callback</p>
-        </div>
       </div>
     </div>
   );

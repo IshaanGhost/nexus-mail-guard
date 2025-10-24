@@ -1,9 +1,14 @@
 import OpenAI from 'openai';
-import { GmailMessage, ClassifiedEmail } from './gmail-api';
-
-// OpenAI client will be initialized with API key passed to functions
+import { GmailMessage } from './gmail-api';
 
 export type EmailCategory = 'Important' | 'Promotional' | 'Social' | 'Marketing' | 'Spam' | 'General';
+
+export interface ClassifiedEmail extends GmailMessage {
+  category: EmailCategory;
+  reason: string;
+}
+
+// OpenAI client will be initialized with API key passed to functions
 
 export interface ClassificationResult {
   category: EmailCategory;
