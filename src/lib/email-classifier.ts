@@ -80,10 +80,16 @@ Be concise but clear in your reasoning. Focus on the content and context of the 
     return classification;
   } catch (error) {
     console.error('Error classifying email:', error);
+    console.error('Email details:', {
+      from: email.from,
+      subject: email.subject,
+      bodyLength: email.body.length
+    });
+    
     // Return a default classification if OpenAI fails
     return {
       category: 'General',
-      reason: 'Unable to classify due to processing error'
+      reason: `Unable to classify due to processing error: ${error instanceof Error ? error.message : 'Unknown error'}`
     };
   }
 }
@@ -99,17 +105,34 @@ export async function classifyEmails(emails: GmailMessage[], openaiApiKey: strin
   for (let i = 0; i < emails.length; i += batchSize) {
     const batch = emails.slice(i, i + batchSize);
     
-    const batchPromises = batch.map(async (email) => {
-      const classification = await classifyEmail(email, openaiApiKey);
-      return {
-        ...email,
-        category: classification.category,
-        reason: classification.reason,
-      } as ClassifiedEmail;
+    const batchPromises = batch.map(async (email, index) => {
+      try {
+        console.log(`🤖 Classifying email ${i + index + 1}: ${email.subject}`);
+        const classification = await classifyEmail(email, openaiApiKey);
+        console.log(`✅ Classified as ${classification.category}: ${email.subject}`);
+        return {
+          ...email,
+          category: classification.category,
+          reason: classification.reason,
+        } as ClassifiedEmail;
+      } catch (error) {
+        console.error(`❌ Failed to classify email ${i + index + 1}:`, error);
+        return {
+          ...email,
+          category: 'General' as EmailCategory,
+          reason: `Classification failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        } as ClassifiedEmail;
+      }
     });
     
     const batchResults = await Promise.all(batchPromises);
     classifiedEmails.push(...batchResults);
+    
+    // Add delay between batches to avoid rate limiting
+    if (i + batchSize < emails.length) {
+      console.log('⏳ Waiting 1 second before next batch...');
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
   }
   
   return classifiedEmails;
