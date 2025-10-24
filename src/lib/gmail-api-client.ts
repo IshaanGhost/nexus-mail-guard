@@ -124,23 +124,38 @@ function extractTextFromParts(parts: any[]): string {
  */
 export async function fetchGmailEmails(accessToken: string): Promise<GmailMessage[]> {
   try {
+    console.log('📧 Starting to fetch Gmail emails...');
     const messageIds = await fetchGmailMessageIds(accessToken);
+    console.log(`📧 Found ${messageIds.length} message IDs:`, messageIds);
+    
     const emails: GmailMessage[] = [];
     
     // Fetch each message (limit to 15 as requested)
-    for (const messageId of messageIds.slice(0, 15)) {
+    for (let i = 0; i < Math.min(messageIds.length, 15); i++) {
+      const messageId = messageIds[i];
+      console.log(`📧 Fetching email ${i + 1}/15 (ID: ${messageId})`);
+      
       try {
         const email = await fetchGmailMessage(accessToken, messageId);
         emails.push(email);
+        console.log(`✅ Successfully fetched email ${i + 1}: ${email.subject}`);
+        
+        // Add small delay to avoid rate limiting
+        if (i < Math.min(messageIds.length, 15) - 1) {
+          console.log('⏳ Waiting 100ms before next email...');
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
       } catch (error) {
-        console.error(`Failed to fetch message ${messageId}:`, error);
+        console.error(`❌ Failed to fetch message ${messageId}:`, error);
+        console.log(`🔄 Continuing with next email...`);
         // Continue with other messages even if one fails
       }
     }
     
+    console.log(`📧 Final result: ${emails.length} emails fetched successfully`);
     return emails;
   } catch (error) {
-    console.error('Error fetching Gmail emails:', error);
+    console.error('❌ Error fetching Gmail emails:', error);
     throw new Error('Failed to fetch Gmail emails');
   }
 }
