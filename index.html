@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nexus Mail Guard - AI-Powered Gmail Organization</title>
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <!-- Favicon with cache busting and preload -->
+    <link rel="preload" href="/favicon.svg?v=2" as="image" type="image/svg+xml" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2" />
+    <link rel="apple-touch-icon" href="/favicon.svg?v=2" />
+    <link rel="shortcut icon" href="/favicon.svg?v=2" />
     <meta name="description" content="Organize your Gmail inbox with AI-powered email classification. Automatically categorize emails into Important, Promotions, Social, Marketing, and Spam using GPT-4." />
     <meta name="author" content="Email Classifier" />
 
