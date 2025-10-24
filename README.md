@@ -13,6 +13,8 @@ An AI-powered email classification system that automatically categorizes your Gm
 - **🔒 Privacy-Focused** - Your emails are processed securely and not stored
 - **⚡ Client-Side Processing** - Fast, secure email classification in your browser
 - **🛡️ Error Handling** - Robust error handling with helpful user feedback
+- **🎨 Custom Branding** - Professional favicon and clean UI design
+- **🚀 Production Ready** - Fully deployed on Vercel with no external dependencies
 
 ## 🚀 Live Demo
 
@@ -27,6 +29,8 @@ An AI-powered email classification system that automatically categorizes your Gm
 - **Email API**: Gmail API
 - **Deployment**: Vercel
 - **State Management**: React Hooks + Local Storage
+- **Build Tool**: Vite (fast development and production builds)
+- **Styling**: Tailwind CSS + CSS Variables
 
 ## 🎯 How It Works
 
@@ -35,6 +39,21 @@ An AI-powered email classification system that automatically categorizes your Gm
 3. **Fetch Emails** - Retrieves your last 15 Gmail messages
 4. **AI Classification** - GPT-4o analyzes and categorizes each email
 5. **View Results** - See categorized emails with reasoning
+
+## 🆕 Recent Updates
+
+### Version 2.3 (Latest)
+- ✅ **Fixed favicon loading** - Custom purple mail icon with cache-busting
+- ✅ **Removed all Lovable dependencies** - Clean, independent codebase
+- ✅ **Enhanced error handling** - Better user feedback for API issues
+- ✅ **Improved rate limiting** - Prevents OpenAI quota exceeded errors
+- ✅ **Updated branding** - Professional UI with custom favicon
+- ✅ **Production optimizations** - Faster loading and better performance
+
+### Previous Versions
+- **v2.2**: Fixed Gmail API base64 decoding issues
+- **v2.1**: Added demo mode and usage tracking
+- **v2.0**: Complete rewrite with client-side processing
 
 ## 🚀 Quick Start
 
@@ -152,20 +171,30 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Check your OpenAI billing at [platform.openai.com/account/billing](https://platform.openai.com/account/billing)
 - Add a payment method if you've used your free credits
 - Try demo mode while setting up billing
+- The app includes rate limiting to prevent quota issues
 
 **"Redirect URI mismatch" error:**
 - This is usually resolved automatically
 - Try clearing your browser cache and signing in again
+- The app is configured with proper redirect URIs for Vercel
 
 **Emails not loading:**
 - Ensure you're signed in with Google
 - Check that Gmail API is enabled in your Google account
 - Try refreshing the page
+- Check browser console for any error messages
 
 **Classification not working:**
 - Make sure you've added a valid OpenAI API key
 - Check that your API key has sufficient credits
 - Try demo mode to test the interface
+- The app includes detailed error logging in the console
+
+**Favicon not updating:**
+- Hard refresh the page (Ctrl+F5 or Cmd+Shift+R)
+- Clear browser cache
+- Try opening in incognito/private mode
+- The app includes cache-busting for favicon updates
 
 ## 📞 Support
 
