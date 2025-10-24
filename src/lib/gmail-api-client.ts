@@ -17,6 +17,8 @@ export interface ClassifiedEmail extends GmailMessage {
  */
 export async function fetchGmailMessageIds(accessToken: string): Promise<string[]> {
   try {
+    console.log('🔍 Fetching Gmail message IDs with token:', accessToken?.substring(0, 20) + '...');
+    
     const response = await fetch(
       'https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=15',
       {
@@ -27,14 +29,21 @@ export async function fetchGmailMessageIds(accessToken: string): Promise<string[
       }
     );
 
+    console.log('📡 Gmail API response status:', response.status);
+
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Gmail API error response:', errorText);
       throw new Error(`Gmail API error: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
-    return data.messages?.map((msg: any) => msg.id) || [];
+    console.log('📧 Gmail API response data:', data);
+    const messageIds = data.messages?.map((msg: any) => msg.id) || [];
+    console.log('📧 Found message IDs:', messageIds.length);
+    return messageIds;
   } catch (error) {
-    console.error('Error fetching Gmail message IDs:', error);
+    console.error('❌ Error fetching Gmail message IDs:', error);
     throw new Error('Failed to fetch Gmail message IDs');
   }
 }

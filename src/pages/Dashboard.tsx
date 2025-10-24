@@ -41,7 +41,13 @@ const Dashboard = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         setUser(session.user);
-        setAccessToken(session.provider_token || null);
+        // Try multiple ways to get the access token
+        const token = session.provider_token || session.access_token || null;
+        console.log('🔑 Session data:', session);
+        console.log('🔑 Provider token:', session.provider_token);
+        console.log('🔑 Access token:', session.access_token);
+        console.log('🔑 Selected token:', token);
+        setAccessToken(token);
       } else {
         navigate("/login");
       }
@@ -51,7 +57,9 @@ const Dashboard = () => {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-      setAccessToken(session?.provider_token || null);
+      const token = session?.provider_token || session?.access_token || null;
+      console.log('🔄 Auth state change - token:', token);
+      setAccessToken(token);
       if (!session) {
         navigate("/login");
       }
@@ -95,10 +103,14 @@ const Dashboard = () => {
       return;
     }
 
+    console.log('📧 Starting email fetch with token:', accessToken?.substring(0, 20) + '...');
+    
     setFetchingEmails(true);
     try {
       // Use the new classification API with access token
+      console.log('🔄 Calling classifyEmailsClient...');
       const classifiedEmails = await classifyEmailsClient(openaiKey, accessToken);
+      console.log('✅ Received classified emails:', classifiedEmails.length);
       
       // Convert ClassifiedEmail to Email format for display
       const emails: Email[] = classifiedEmails.map(email => ({
@@ -111,11 +123,12 @@ const Dashboard = () => {
         date: email.date,
       }));
 
+      console.log('📧 Processed emails:', emails);
       setEmails(emails);
       localStorage.setItem("emails", JSON.stringify(emails));
       toast.success(`Successfully classified ${emails.length} emails`);
     } catch (error: any) {
-      console.error("Error fetching and classifying emails:", error);
+      console.error("❌ Error fetching and classifying emails:", error);
       toast.error(error.message || "Failed to fetch and classify emails");
     } finally {
       setFetchingEmails(false);
