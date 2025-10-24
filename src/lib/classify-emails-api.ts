@@ -1,4 +1,3 @@
-import { supabase } from '@/integrations/supabase/client';
 import { fetchGmailEmails } from './gmail-api-client';
 import { classifyEmails, ClassifiedEmail } from './email-classifier';
 
@@ -6,19 +5,11 @@ import { classifyEmails, ClassifiedEmail } from './email-classifier';
  * Main API handler for email classification
  * This function handles the complete pipeline from authentication to classification
  */
-export async function classifyEmailsHandler(openaiApiKey: string): Promise<ClassifiedEmail[]> {
+export async function classifyEmailsHandler(openaiApiKey: string, accessToken: string): Promise<ClassifiedEmail[]> {
   try {
-    // 1. Authentication: Get user session and Google Access Token
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-    
-    if (sessionError || !session) {
-      throw new Error('Authentication failed: No valid session found');
-    }
-
-    // Get the Google access token from the session
-    const accessToken = session.provider_token;
+    // 1. Authentication: Validate access token
     if (!accessToken) {
-      throw new Error('Authentication failed: No Google access token found');
+      throw new Error('Authentication failed: No Google access token provided');
     }
 
     // 2. Set OpenAI Key (passed as parameter)
@@ -63,7 +54,13 @@ export async function classifyEmailsClient(openaiApiKey: string): Promise<Classi
     
     console.warn('Warning: This is a client-side implementation. In production, move this to a secure backend API.');
     
-    return await classifyEmailsHandler(openaiApiKey);
+    // Get access token from auth context
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      throw new Error('No access token found. Please sign in again.');
+    }
+    
+    return await classifyEmailsHandler(openaiApiKey, accessToken);
   } catch (error) {
     console.error('Error in classifyEmailsClient:', error);
     throw error;
