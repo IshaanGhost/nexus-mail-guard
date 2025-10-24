@@ -78,7 +78,14 @@ export async function fetchGmailMessage(accessToken: string, messageId: string):
     // Extract body text
     let body = '';
     if (message.payload?.body?.data) {
-      body = atob(message.payload.body.data);
+      try {
+        // Clean the base64 string and decode safely
+        const cleanData = message.payload.body.data.replace(/-/g, '+').replace(/_/g, '/');
+        body = atob(cleanData);
+      } catch (error) {
+        console.warn(`Failed to decode body for message ${messageId}:`, error);
+        body = message.snippet || '';
+      }
     } else if (message.payload?.parts) {
       // Handle multipart messages
       body = extractTextFromParts(message.payload.parts);
@@ -106,11 +113,22 @@ function extractTextFromParts(parts: any[]): string {
   
   for (const part of parts) {
     if (part.mimeType === 'text/plain' && part.body?.data) {
-      text += atob(part.body.data);
+      try {
+        const cleanData = part.body.data.replace(/-/g, '+').replace(/_/g, '/');
+        text += atob(cleanData);
+      } catch (error) {
+        console.warn('Failed to decode text/plain part:', error);
+        // Skip this part if decoding fails
+      }
     } else if (part.mimeType === 'text/html' && part.body?.data) {
-      // For HTML content, we'll extract text (basic implementation)
-      const html = atob(part.body.data);
-      text += html.replace(/<[^>]*>/g, ''); // Remove HTML tags
+      try {
+        const cleanData = part.body.data.replace(/-/g, '+').replace(/_/g, '/');
+        const html = atob(cleanData);
+        text += html.replace(/<[^>]*>/g, ''); // Remove HTML tags
+      } catch (error) {
+        console.warn('Failed to decode text/html part:', error);
+        // Skip this part if decoding fails
+      }
     } else if (part.parts) {
       text += extractTextFromParts(part.parts);
     }
