@@ -33,7 +33,7 @@
 3. Application type: **Web application**
 4. **Authorized redirect URIs** - Add this URL:
    ```
-   https://ougtiqmkbjfggpijhldu.supabase.co/auth/v1/callback
+   https://zstxmjpmkhtcqmbladva.supabase.co/auth/v1/callback
    ```
    
    For local development, also add:

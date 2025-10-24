@@ -18,6 +18,9 @@ const Login = () => {
   }, [navigate]);
 
   const handleGoogleLogin = async () => {
+    console.log('Supabase URL:', supabase.supabaseUrl);
+    console.log('Current origin:', window.location.origin);
+    
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -70,6 +73,13 @@ const Login = () => {
           By signing in, you agree to access your Gmail for classification
         </p>
         
+        {/* Debug info */}
+        <div className="mt-4 p-4 bg-muted rounded-lg text-xs">
+          <p><strong>Debug Info:</strong></p>
+          <p>Supabase URL: {supabase.supabaseUrl}</p>
+          <p>Origin: {window.location.origin}</p>
+          <p>Expected Redirect: {supabase.supabaseUrl}/auth/v1/callback</p>
+        </div>
       </div>
     </div>
   );
