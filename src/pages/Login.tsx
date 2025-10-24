@@ -11,11 +11,9 @@ const Login = () => {
   useEffect(() => {
     // Check if user is already logged in
     const checkSession = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      console.log('🔍 Login page - checking session:', { session: !!session, error });
+      const { data: { session } } = await supabase.auth.getSession();
       
       if (session) {
-        console.log('✅ User already logged in, redirecting to dashboard');
         navigate("/dashboard");
       }
     };
@@ -24,9 +22,7 @@ const Login = () => {
 
     // Also listen for auth state changes (in case user logs in while on this page)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('🔄 Login page - auth state change:', event, !!session);
       if (session) {
-        console.log('✅ User logged in via auth state change, redirecting to dashboard');
         navigate("/dashboard");
       }
     });
@@ -35,11 +31,6 @@ const Login = () => {
   }, [navigate]);
 
   const handleGoogleLogin = async () => {
-    console.log('🔧 Login Debug Info:');
-    console.log('📍 Supabase URL:', supabase.supabaseUrl);
-    console.log('🌐 Current origin:', window.location.origin);
-    console.log('🔗 Expected redirect:', `${supabase.supabaseUrl}/auth/v1/callback`);
-    
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
