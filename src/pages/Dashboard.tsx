@@ -46,7 +46,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Check for user session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const checkSession = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      console.log('🔍 Dashboard - checking session:', { session: !!session, error });
+      
       if (session) {
         setUser(session.user);
         // Try multiple ways to get the access token
@@ -57,18 +60,23 @@ const Dashboard = () => {
         console.log('🔑 Selected token:', token);
         setAccessToken(token);
       } else {
+        console.log('❌ No session found, redirecting to login');
         navigate("/login");
       }
       setIsLoading(false);
-    });
+    };
+
+    checkSession();
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('🔄 Dashboard - auth state change:', event, !!session);
       setUser(session?.user ?? null);
       const token = session?.provider_token || session?.access_token || null;
       console.log('🔄 Auth state change - token:', token);
       setAccessToken(token);
       if (!session) {
+        console.log('❌ Session lost, redirecting to login');
         navigate("/login");
       }
     });
