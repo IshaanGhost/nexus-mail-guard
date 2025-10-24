@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
 // CRITICAL: Force the correct Supabase project URL to avoid redirect_uri_mismatch
-// This overrides ANY environment variables that Lovable might be setting
+// This overrides ANY environment variables that might be set
 const SUPABASE_URL = 'https://zstxmjpmkhtcqmbladva.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzdHhtanBta2h0Y3FtYmxhZHZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzMjc1MjEsImV4cCI6MjA3NjkwMzUyMX0.JFvYBj05Yr08tDU_przHMi2fL_M40gBy514SMaFOneg';
 
@@ -12,7 +12,7 @@ console.log('🔧 Supabase Configuration:');
 console.log('📍 Supabase URL:', SUPABASE_URL);
 console.log('🔗 Expected redirect URI:', `${SUPABASE_URL}/auth/v1/callback`);
 console.log('🌐 Current origin:', window.location.origin);
-console.log('⚠️  If you see the old project ID (ougtiqmkbjfggpijhldu), Lovable is overriding our config!');
+console.log('⚠️  If you see the old project ID (ougtiqmkbjfggpijhldu), environment variables are overriding our config!');
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";

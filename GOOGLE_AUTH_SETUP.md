@@ -45,9 +45,9 @@
 5. Click **Create**
 6. Copy the **Client ID** and **Client Secret**
 
-## Step 4: Configure in Lovable Cloud
+## Step 4: Configure in Vercel
 
-1. Open your Lovable Cloud backend dashboard
+1. Open your Vercel dashboard
 2. Go to **Auth Settings** → **Google**
 3. Enable Google provider
 4. Paste your **Client ID** and **Client Secret**

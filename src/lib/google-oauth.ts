@@ -1,6 +1,6 @@
 // Custom Google OAuth implementation to bypass Supabase redirect issues
 export const GOOGLE_CLIENT_ID = '684659445939-sbahccfitbrqbrocv8vrsg2f0g6oa9cb.apps.googleusercontent.com';
-export const GOOGLE_REDIRECT_URI = 'https://nexus-mail-guard.lovable.app/auth/callback';
+export const GOOGLE_REDIRECT_URI = 'https://nexus-mail-guard.vercel.app/auth/callback';
 export const GOOGLE_SCOPES = [
   'https://www.googleapis.com/auth/userinfo.email',
   'https://www.googleapis.com/auth/userinfo.profile',
