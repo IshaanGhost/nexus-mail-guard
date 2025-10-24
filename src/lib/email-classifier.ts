@@ -101,8 +101,8 @@ Be concise but clear in your reasoning. Focus on the content and context of the 
 export async function classifyEmails(emails: GmailMessage[], openaiApiKey: string): Promise<ClassifiedEmail[]> {
   const classifiedEmails: ClassifiedEmail[] = [];
   
-  // Process emails in parallel (with a reasonable concurrency limit)
-  const batchSize = 5;
+  // Process emails in parallel (with a smaller batch size to avoid rate limits)
+  const batchSize = 2;
   for (let i = 0; i < emails.length; i += batchSize) {
     const batch = emails.slice(i, i + batchSize);
     
@@ -118,10 +118,23 @@ export async function classifyEmails(emails: GmailMessage[], openaiApiKey: strin
         } as ClassifiedEmail;
       } catch (error) {
         console.error(`❌ Failed to classify email ${i + index + 1}:`, error);
+        
+        // Handle specific OpenAI errors
+        let errorMessage = 'Classification failed';
+        if (error instanceof Error) {
+          if (error.message.includes('429') || error.message.includes('quota')) {
+            errorMessage = 'OpenAI quota exceeded - please check your billing';
+          } else if (error.message.includes('401') || error.message.includes('unauthorized')) {
+            errorMessage = 'Invalid OpenAI API key';
+          } else {
+            errorMessage = error.message;
+          }
+        }
+        
         return {
           ...email,
           category: 'General' as EmailCategory,
-          reason: `Classification failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+          reason: errorMessage,
         } as ClassifiedEmail;
       }
     });
@@ -129,10 +142,10 @@ export async function classifyEmails(emails: GmailMessage[], openaiApiKey: strin
     const batchResults = await Promise.all(batchPromises);
     classifiedEmails.push(...batchResults);
     
-    // Add delay between batches to avoid rate limiting
+    // Add longer delay between batches to avoid rate limiting
     if (i + batchSize < emails.length) {
-      console.log('⏳ Waiting 1 second before next batch...');
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log('⏳ Waiting 3 seconds before next batch to avoid rate limits...');
+      await new Promise(resolve => setTimeout(resolve, 3000));
     }
   }
   
