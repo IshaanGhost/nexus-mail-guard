@@ -37,10 +37,12 @@ const Dashboard = () => {
   const [showTutorial, setShowTutorial] = useState(false);
   
   // Force rebuild test - remove this after testing
-  console.log('🚀 NEXUS MAIL GUARD v2.0 - MAJOR UPDATE DEPLOYED!');
+  console.log('🚀 NEXUS MAIL GUARD v2.2 - MAJOR UPDATE DEPLOYED!');
   console.log('📧 Demo Mode Available');
   console.log('🔧 Real Gmail Integration Active');
   console.log('🎯 Enhanced UI Features Loaded');
+  console.log('🔍 Current access token:', accessToken ? 'Present' : 'Missing');
+  console.log('🔍 Current user:', user ? 'Logged in' : 'Not logged in');
 
   useEffect(() => {
     // Check for user session
