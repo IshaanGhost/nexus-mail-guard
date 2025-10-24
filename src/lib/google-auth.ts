@@ -1,6 +1,6 @@
 // Google OAuth configuration for Lovable Cloud
-export const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-export const GOOGLE_CLIENT_SECRET = import.meta.env.VITE_GOOGLE_CLIENT_SECRET;
+export const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '684659445939-sbahccfitbrqbrocv8vrsg2f0g6oa9cb.apps.googleusercontent.com';
+export const GOOGLE_CLIENT_SECRET = import.meta.env.VITE_GOOGLE_CLIENT_SECRET || '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';
 
 // Google OAuth scopes
 export const GOOGLE_SCOPES = [
