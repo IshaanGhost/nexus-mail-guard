@@ -300,8 +300,8 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border/50 backdrop-blur-sm bg-card/30 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-            Nexus Mail Guard v2.2
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
+            Nexus Mail Guard v2.3
           </h1>
           <Button onClick={handleLogout} variant="outline" size="sm">
             <LogOut className="mr-2 h-4 w-4" />
@@ -311,6 +311,29 @@ const Dashboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8 space-y-6">
+        {/* Statistics Overview */}
+        {(emails.length > 0 || classifiedEmails.length > 0) && (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {Object.entries({
+              Important: { count: [...emails, ...classifiedEmails].filter(e => e.category === 'Important').length, color: 'bg-emerald-500' },
+              Promotional: { count: [...emails, ...classifiedEmails].filter(e => e.category === 'Promotional').length, color: 'bg-amber-500' },
+              Social: { count: [...emails, ...classifiedEmails].filter(e => e.category === 'Social').length, color: 'bg-blue-500' },
+              Marketing: { count: [...emails, ...classifiedEmails].filter(e => e.category === 'Marketing').length, color: 'bg-purple-500' },
+              Spam: { count: [...emails, ...classifiedEmails].filter(e => e.category === 'Spam').length, color: 'bg-red-500' },
+              General: { count: [...emails, ...classifiedEmails].filter(e => e.category === 'General').length, color: 'bg-slate-500' },
+            }).map(([category, { count, color }]) => (
+              <Card key={category} className="shadow-md border-border/50 hover:shadow-lg transition-shadow">
+                <CardContent className="p-4 text-center">
+                  <div className={`w-12 h-12 mx-auto rounded-full ${color} flex items-center justify-center mb-2`}>
+                    <span className="text-white font-bold text-lg">{count}</span>
+                  </div>
+                  <p className="text-xs font-medium text-muted-foreground">{category}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+
         <Card className="shadow-card border-border/50">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">

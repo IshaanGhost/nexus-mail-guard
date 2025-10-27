@@ -202,7 +202,7 @@ If you encounter any issues or have questions:
 
 ---
 
-**Made with ❤️ by Ishaan**
+**Made by Ishaan**
 
 [![Deploy with Vercel](https://img.shields.io/badge/Deploy%20with-Vercel-black)](https://vercel.com)
 [![GitHub stars](https://img.shields.io/github/stars/IshaanGhost/nexus-mail-guard?style=social)](https://github.com/IshaanGhost/nexus-mail-guard)

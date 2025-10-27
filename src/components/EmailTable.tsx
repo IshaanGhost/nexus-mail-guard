@@ -16,12 +16,12 @@ interface EmailTableProps {
 }
 
 const categoryColors: Record<string, string> = {
-  Important: "bg-green-100 text-green-800 border-green-200",
-  Promotional: "bg-yellow-100 text-yellow-800 border-yellow-200",
-  Social: "bg-blue-100 text-blue-800 border-blue-200",
-  Marketing: "bg-purple-100 text-purple-800 border-purple-200",
-  Spam: "bg-red-100 text-red-800 border-red-200",
-  General: "bg-gray-100 text-gray-800 border-gray-200",
+  Important: "bg-emerald-500/10 text-emerald-700 border-emerald-500/20 font-semibold shadow-sm",
+  Promotional: "bg-amber-500/10 text-amber-700 border-amber-500/20 font-semibold shadow-sm",
+  Social: "bg-blue-500/10 text-blue-700 border-blue-500/20 font-semibold shadow-sm",
+  Marketing: "bg-purple-500/10 text-purple-700 border-purple-500/20 font-semibold shadow-sm",
+  Spam: "bg-red-500/10 text-red-700 border-red-500/20 font-semibold shadow-sm",
+  General: "bg-slate-500/10 text-slate-700 border-slate-500/20 font-semibold shadow-sm",
 };
 
 export function EmailTable({ emails }: EmailTableProps) {
